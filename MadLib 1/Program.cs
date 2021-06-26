@@ -1,22 +1,16 @@
 ﻿using System;
+using System.Globalization;
 
 namespace Game
 {
     static class Madlib
     {
         //declare variables
-        static String Creature;
-        static String Luminous;
-        static String Ghastly;
-        static String Spectral;
-        static String Countryman;
-        static String Farrier;
-        static String Farmer;
-        static String Dreadful;
-        static String Apparition;
-        static String Hound;
-        static String Story;
-        public static void Run()
+        static string[] Words = new string[] { "creature", "luminous", "ghastly", "spectral", "countryman", "farrier", "farmer", "dreaful", "apparition", "hound" };
+        static string[] Prompts = new string[] { "noun", "adjective", "adjective", "adjective", "occupation", "occupation", "occupation", "adjective", "noun", "noun" };
+        static string Story;
+        static string GameTitle;
+public static void Run()
         {
             Start();
             GetWords();
@@ -26,6 +20,8 @@ namespace Game
 
         static void Start()
         {
+            //Set window bar title
+            Console.Title = "Make a Madlib";
             //write out a header
 
             Console.WriteLine("--------");
@@ -38,40 +34,33 @@ namespace Game
         {
             //ask player to enter words
 
-            Console.WriteLine("Please enter a noun: ");
-            Creature = Console.ReadLine();
-            Console.WriteLine("Please enter an adjective: ");
-            Luminous = Console.ReadLine();
-            Console.WriteLine("Please enter an adjective: ");
-            Ghastly = Console.ReadLine();
-            Console.WriteLine("Please enter an adjective: ");
-            Spectral = Console.ReadLine();
-            Console.WriteLine("Please enter a vocation: ");
-            Countryman = Console.ReadLine();
-            Console.WriteLine("Please enter a vocation: ");
-            Farrier = Console.ReadLine();
-            Console.WriteLine("Please enter a vocation: ");
-            Farmer = Console.ReadLine();
-            Console.WriteLine("Please enter an adjective: ");
-            Dreadful = Console.ReadLine();
-            Console.WriteLine("Please enter a noun: ");
-            Apparition = Console.ReadLine();
-            Console.WriteLine("Please enter a noun: ");
-            Hound = Console.ReadLine();
+            for (int i = 0; i < Words.Length; i++)
+            {
+                Console.Write("Please enter a/an " + Prompts[i] + ": ");
+                Words[i] = Console.ReadLine();
+            }
         }
 
         static void WriteStory()
         {
-            //write out finished story
+            //Concatenate strings to make a title
+            GameTitle = "The " + Words[1] + " " + Words[2] + " " + Words[0];
 
-            Story = "They all agreed that it was a huge " + Creature + ", " + Luminous + ", " + Ghastly + ", and " + Spectral + ". I have cross-examined these men, one of them a hard-headed " + Countryman + ", one a " + Farrier + ", and one a moorland " + Farmer + ", who all tell the same story of this " + Dreadful + " " + Apparition + ", exactly corresponding to the " + Hound + " of the legend.";
-            Console.WriteLine(Story);
+            //So we can capitalize the words in our title
+            TextInfo TitleCase = new CultureInfo("en-US", false).TextInfo;
+            GameTitle = TitleCase.ToTitleCase(GameTitle);
+
+            //Write the title to the console window
+            Console.WriteLine(GameTitle);
+
+            //Write out story
+            Story = "They all agreed that it was a huge {0}, {1}, {2} and {3}. \nI have cross-examined these men, one of them a hard-headed {4}, one a {5}, and one a moorland {6}, who all tell the same story\nof this {7} {8}, exactly corresponding to the {9} of the legend.";
+            Console.WriteLine(Story, Words[0], Words[1], Words[2], Words[3], Words[4], Words[5], Words[6], Words[7], Words[8], Words[9]);
         }
 
         static void End()
         {
             //keep window open and prompt for exit
-
             Console.WriteLine("Press enter to exit");
             Console.ReadKey();
         }
@@ -80,7 +69,6 @@ namespace Game
         {
             static void Main()
             {
-                //original statements were here
                 Madlib.Run();
             }
         }
