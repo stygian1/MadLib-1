@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Globalization;
 
 namespace Game
@@ -10,30 +11,33 @@ namespace Game
         static string[] Prompts = new string[] { "noun", "adjective", "adjective", "adjective", "occupation", "occupation", "occupation", "adjective", "noun", "noun" };
         static string Story;
         static string GameTitle;
-public static void Run()
+        public logging logger;
+
+        public static void Run()
         {
             Start();
             GetWords();
             WriteStory();
             End();
         }
-
+        
         static void Start()
         {
             //Set window bar title
             Console.Title = "Make a Madlib";
             //write out a header
-
+        
             Console.WriteLine("--------");
             Console.WriteLine("Madlib!");
             Console.WriteLine("--------");
-
+            logger = new logging();
+        
         }
-
+        
         static void GetWords()
         {
             //ask player to enter words
-
+        
             for (int i = 0; i < Words.Length; i++)
             {
                 Console.Write("Please enter a/an " + Prompts[i] + ": ");
@@ -43,6 +47,8 @@ public static void Run()
 
         static void WriteStory()
         {
+            StringBuilder StoryBuilder = new StringBuilder();
+            
             //Concatenate strings to make a title
             GameTitle = "The " + Words[1] + " " + Words[2] + " " + Words[0];
 
@@ -55,7 +61,9 @@ public static void Run()
 
             //Write out story
             Story = "They all agreed that it was a huge {0}, {1}, {2} and {3}. \nI have cross-examined these men, one of them a hard-headed {4}, one a {5}, and one a moorland {6}, who all tell the same story\nof this {7} {8}, exactly corresponding to the {9} of the legend.";
+            Story.AppendJoin(Story, Words[0], Words[1], Words[2], Words[3], Words[4], Words[5], Words[6], Words[7], Words[8], Words[9]);
             Console.WriteLine(Story, Words[0], Words[1], Words[2], Words[3], Words[4], Words[5], Words[6], Words[7], Words[8], Words[9]);
+            logger.WriteLog(GameTitle, Story.ToString());
         }
 
         static void End()
